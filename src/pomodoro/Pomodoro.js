@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import classNames from "../utils/class-names";
 import useInterval from "../utils/useInterval";
-import { secondsToDuration } from "../utils/duration";
-import SetBreakFocusDuration from "./FocusBreakDurationChanger";
 import PercentBar from "./PercentBar";
 import TimeRemainingLabels from "./TimeRemainingLabels";
+import PlayPause from "./PlayPause";
+import BreakDuration from "./BreakDuationChanger";
+import FocusDuration from "./FocusDurationChanger";
 // These functions are defined outside of the component to ensure they do not have access to state
 // and are, therefore, more likely to be pure.
 
@@ -58,7 +58,7 @@ function Pomodoro() {
   const [session, setSession] = useState(null);
   const [focusDuration, setFocusDuration] = useState(25);
   const [breakDuration, setBreakDuration] = useState(5);
-
+  console.log(isTimerRunning)
   // const increaseFocusDuration = () => setFocusDuration(focusDuration + 5)
 
   // const decreaseFocusDuration = () => setFocusDuration(focusDuration - 5)
@@ -117,7 +117,7 @@ function Pomodoro() {
    */
   function playPause() {
     setIsTimerRunning((prevState) => {
-      //console.log(prevState)
+
       //when playPause response to onClock, prevState is set as the opposite of what it was previously... originally it is false from setIsTimerRunning(false)
       const nextState = !prevState; //next state is equal to falsy of prevState... so if prevState is null then nextState is true
       if (nextState) {
@@ -150,51 +150,42 @@ function Pomodoro() {
   }
 
 
+
   return (
     <div className="pomodoro">
-        <SetBreakFocusDuration 
+        {/* <SetBreakFocusDuration 
           focusDuration = {focusDuration}
           focusDurationChanger = {focusDurationChanger}
           session = {session}
           breakDuration = {breakDuration}
           breakDurationChanger = {breakDurationChanger}
-        />
+        /> */}
+      <div className="row">
+        <FocusDuration 
+          focusDuration = {focusDuration}
+          focusDurationChanger = {focusDurationChanger}
+          session = {session}
+          breakDuration = {breakDuration}
+          breakDurationChanger = {breakDurationChanger}
+        /> 
 
+      <div className="float-right">
+        <BreakDuration 
+          focusDuration = {focusDuration}
+          focusDurationChanger = {focusDurationChanger}
+          session = {session}
+          breakDuration = {breakDuration}
+          breakDurationChanger = {breakDurationChanger}
+        /> 
+      </div>
+    </div>
       <div className="row">
         <div className="col">
-          <div
-            className="btn-group btn-group-lg mb-2"
-            role="group"
-            aria-label="Timer controls"
-          >
-            <button
-              type="button"
-              className="btn btn-primary"
-              data-testid="play-pause"
-              title="Start or pause timer"
-              onClick={playPause}
-            >
-              <span
-                className={classNames({
-                  oi: true,
-                  "oi-media-play": !isTimerRunning,
-                  "oi-media-pause": isTimerRunning,
-                })}
-              />
-            </button>
-            {/* TODO: Implement stopping the current focus or break session. and disable the stop button when there is no active session */}
-            {/* TODO: Disable the stop button when there is no active session */}
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-testid="stop"
-              title="Stop the session"
-              onClick={stop}
-            >
-            <span className="oi oi-media-stop" />
-            </button>
-            </div>
-          </div>
+          <PlayPause 
+          isTimerRunning={isTimerRunning} 
+          playPause={playPause} 
+          stop={stop} />
+          </div> 
         </div>
       <div>
         {/* DONE(?): This area should show only when there is an active focus or break - i.e. the session is running or is paused */}
@@ -202,6 +193,7 @@ function Pomodoro() {
           breakDuration={breakDuration}
           focusDuration={focusDuration}
           session = {session}
+          isTimerRunning = {isTimerRunning}
         />
       </div>
         <PercentBar 

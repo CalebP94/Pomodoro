@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { secondsToDuration, minutesToDuration } from "../utils/duration";
 
 
-function TimeRemainingLabels({breakDuration, focusDuration, session}){
-    console.log("SESSION", session);
+function TimeRemainingLabels({isTimerRunning, breakDuration, focusDuration, session}){
+    //console.log("SESSION", session);
     if(!session) return null;
     // const [timeReaminingVar, setTimeRemainingVar] = useState(0);
     // if(!session.timeRemaining){
@@ -31,6 +31,11 @@ function TimeRemainingLabels({breakDuration, focusDuration, session}){
           {/* TODO: Update message below correctly format the time remaining in the current session */}
           <p className="lead" data-testid="session-sub-title">
             { secondsToDuration(session?.timeRemaining)} remaining
+          </p>
+          <p>
+            {!isTimerRunning ? 
+            (<p>PAUSED</p>) : (<p></p>)
+            }
           </p>
         </div>
       </div>
